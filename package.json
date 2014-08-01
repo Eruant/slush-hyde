@@ -10,7 +10,12 @@
   "license": "MIT",
   "devDependencies": {
     "gulp": "^3.8.6",
+    "gulp-front-matter": "^1.0.0",
     "gulp-jade": "^0.7.0",
-    "marked": "^0.3.2"
+    "gulp-marked": "^0.2.0",
+    "jade": "^1.5.0",
+    "marked": "^0.3.2",
+    "path": "^0.4.9",
+    "through2": "^0.5.1"
   }
 }
