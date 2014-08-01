@@ -1,15 +1,16 @@
-var gulp = require('gulp'),
-  frontMatter = require('gulp-front-matter'),
-  marked = require('gulp-marked'),
+var
   ext = require('gulp-ext-replace'),
+  frontMatter = require('gulp-front-matter'),
+  gulp = require('gulp'),
   gulpJade = require('gulp-jade'),
-  jade = require('jade'),
+  nodeJade = require('jade'),
+  marked = require('gulp-marked'),
   through = require('through2');
 
 /*globals Buffer*/
 
 var site = {
-  name: 'Test'
+  title: 'Test'
 };
 
 var applyTemplate = function (templateFile) {
@@ -22,7 +23,7 @@ var applyTemplate = function (templateFile) {
       content: file.contents.toString()
     };
 
-    file.contents = new Buffer(jade.renderFile(templateFile, data), 'utf8');
+    file.contents = new Buffer(nodeJade.renderFile(templateFile, data), 'utf8');
 
     this.push(file);
     cb();
