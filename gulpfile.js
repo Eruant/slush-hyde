@@ -1,33 +1,33 @@
+/*globals Buffer*/
+
 var
   ext = require('gulp-ext-replace'),
   frontMatter = require('gulp-front-matter'),
   gulp = require('gulp'),
   jade = require('jade'),
   marked = require('gulp-marked'),
-  through = require('through2');
+  through = require('through2'),
 
-/*globals Buffer*/
+  site = require('./site'),
+  
+  applyTemplate = function () {
 
-var site = require('./config');
+    return through.obj(function (file, enc, cb) {
 
-var applyTemplate = function () {
+      var data = {
+        site: site,
+        page: file.page,
+        content: file.contents.toString()
+      },
+      template = 'src/_templates/' + file.page.template + '.jade';
 
-  return through.obj(function (file, enc, cb) {
+      file.contents = new Buffer(jade.renderFile(template, data), 'utf8');
 
-    var data = {
-      site: site,
-      page: file.page,
-      content: file.contents.toString()
-    },
-    template = 'src/_templates/' + file.page.template + '.jade';
+      this.push(file);
+      cb();
+    });
 
-    file.contents = new Buffer(jade.renderFile(template, data), 'utf8');
-
-    this.push(file);
-    cb();
-  });
-
-};
+  };
 
 gulp.task('markdown', function () {
 
