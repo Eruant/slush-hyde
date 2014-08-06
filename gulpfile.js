@@ -1,11 +1,15 @@
 /*globals Buffer*/
 
 var
+  browserify = require('browserify'),
   ext = require('gulp-ext-replace'),
   frontMatter = require('gulp-front-matter'),
   gulp = require('gulp'),
   jade = require('jade'),
+  jshint = require('gulp-jshint'),
   marked = require('gulp-marked'),
+  sass = require('gulp-sass'),
+  source = require('vinyl-source-stream'),
   through = require('through2'),
 
   site = require('./site'),
@@ -43,4 +47,29 @@ gulp.task('markdown', function () {
 
 });
 
-gulp.task('default', ['markdown']);
+gulp.task('scripts-hints', function () {
+  return gulp.src(['src/js/**/*.js', '!src/js/**/*_spec.js'])
+    .pipe(jshint('.jshintrc'))
+    .pipe(jshint.reporter('default'))
+    .on('error', function () {
+      console.warn('Error: JSHint encountered an error');
+    });
+});
+
+gulp.task('scripts-compile', ['scripts-hints'], function () {
+  var bundleStream = browserify('./src/js/base.js').bundle();
+
+  bundleStream
+    .pipe(source('bundle.js'))
+    .pipe(gulp.dest('www/js'));
+});
+
+gulp.task('styles', function () {
+  return gulp.src('src/scss/root.scss')
+    .pipe(sass())
+    .pipe(gulp.dest('www/css'));
+});
+
+gulp.task('scripts', ['scripts-hints', 'scripts-compile']);
+gulp.task('compile', ['markdown', 'scripts', 'styles']);
+gulp.task('default', ['compile']);

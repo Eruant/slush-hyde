@@ -9,12 +9,16 @@
   "author": "Matt Gale <matt@littleball.co.uk>",
   "license": "MIT",
   "devDependencies": {
+    "browserify": "^5.9.1",
     "gulp": "^3.8.6",
     "gulp-ext-replace": "^0.1.0",
     "gulp-front-matter": "^1.0.0",
     "gulp-jade": "^0.7.0",
+    "gulp-jshint": "^1.8.4",
     "gulp-marked": "^0.2.0",
+    "gulp-sass": "^0.7.2",
     "jade": "^1.5.0",
-    "through2": "^0.5.1"
+    "through2": "^0.5.1",
+    "vinyl-source-stream": "^0.1.1"
   }
 }
