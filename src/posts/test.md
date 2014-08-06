@@ -1,5 +1,6 @@
 ---
 title: This is a test
+template: post
 ---
 
 # This is a test

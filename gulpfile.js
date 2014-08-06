@@ -2,18 +2,15 @@ var
   ext = require('gulp-ext-replace'),
   frontMatter = require('gulp-front-matter'),
   gulp = require('gulp'),
-  gulpJade = require('gulp-jade'),
-  nodeJade = require('jade'),
+  jade = require('jade'),
   marked = require('gulp-marked'),
   through = require('through2');
 
 /*globals Buffer*/
 
-var site = {
-  title: 'Test'
-};
+var site = require('./config');
 
-var applyTemplate = function (templateFile) {
+var applyTemplate = function () {
 
   return through.obj(function (file, enc, cb) {
 
@@ -21,9 +18,10 @@ var applyTemplate = function (templateFile) {
       site: site,
       page: file.page,
       content: file.contents.toString()
-    };
+    },
+    template = 'src/_templates/' + file.page.template + '.jade';
 
-    file.contents = new Buffer(nodeJade.renderFile(templateFile, data), 'utf8');
+    file.contents = new Buffer(jade.renderFile(template, data), 'utf8');
 
     this.push(file);
     cb();
@@ -31,29 +29,18 @@ var applyTemplate = function (templateFile) {
 
 };
 
-gulp.task('staticFiles', function () {
+gulp.task('markdown', function () {
 
-  return gulp.src([
-      'src/**/*.jade',
-      '!src/layouts/*.jade',
-      '!src/templates/*.jade'
-    ])
-    .pipe(gulpJade())
-    .pipe(gulp.dest('www'));
-});
-
-gulp.task('posts', function () {
-
-  return gulp.src('src/posts/*.md')
+  return gulp.src('src/**/*.md')
     .pipe(frontMatter({
       property: 'page',
       remove: true
     }))
     .pipe(marked())
-    .pipe(applyTemplate('src/templates/post.jade'))
+    .pipe(applyTemplate())
     .pipe(ext('.html'))
-    .pipe(gulp.dest('www/posts'));
+    .pipe(gulp.dest('www'));
 
 });
 
-gulp.task('default', ['staticFiles', 'posts']);
+gulp.task('default', ['markdown']);
