@@ -1,4 +1,4 @@
-/*globals Buffer*/
+/*globals Buffer, console*/
 
 var
   browserify = require('browserify'),
@@ -70,6 +70,13 @@ gulp.task('styles', function () {
     .pipe(gulp.dest('www/css'));
 });
 
+gulp.task('watch', ['compile'], function () {
+  gulp.watch('src/js/**/*.js', ['scripts']);
+  gulp.watch('src/**/*.md', ['markdown']);
+  gulp.watch('src/scss/**/*.scss', ['styles']);
+});
+
+gulp.task('test', ['scripts-hints']);
 gulp.task('scripts', ['scripts-hints', 'scripts-compile']);
 gulp.task('compile', ['markdown', 'scripts', 'styles']);
 gulp.task('default', ['compile']);
