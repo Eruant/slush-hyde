@@ -1,4 +1,19 @@
 extends ../_layouts/main.jade
 
+mixin article(title)
+  .article
+    h2= title
+    if block
+      block
+    else
+      p No content
+
 block content
+
+  section
+    - for (var i = 0; i < 3; i++)
+      +article('page ' + i)
+        p i
+
+  h2= page.title
   section!= content

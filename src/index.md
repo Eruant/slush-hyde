@@ -1,7 +1,6 @@
 ---
 template: home
+title: HDS
 ---
-
-# Home
 
 This template is made for the homepage

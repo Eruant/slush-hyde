@@ -33,6 +33,11 @@ var
 
   };
 
+gulp.task('get-all-data', function () {
+
+  // gather all data from all pages
+});
+
 gulp.task('markdown', function () {
 
   return gulp.src('src/**/*.md')
@@ -73,6 +78,7 @@ gulp.task('styles', function () {
 gulp.task('watch', ['compile'], function () {
   gulp.watch('src/js/**/*.js', ['scripts']);
   gulp.watch('src/**/*.md', ['markdown']);
+  gulp.watch('src/**/*.jade', ['markdown']);
   gulp.watch('src/scss/**/*.scss', ['styles']);
 });
 
