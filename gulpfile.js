@@ -13,7 +13,7 @@ var
   through = require('through2'),
 
   site = require('./site'),
-  
+
   applyTemplate = function () {
 
     return through.obj(function (file, enc, cb) {
@@ -26,19 +26,58 @@ var
       template = 'src/_templates/' + file.page.template + '.jade';
 
       file.contents = new Buffer(jade.renderFile(template, data), 'utf8');
+      console.log('applying...');
 
       this.push(file);
       cb();
     });
 
+  },
+  
+  collectPosts = function () {
+
+    var posts = [],
+      tags = [];
+
+    return through.obj(function (file, enc, cb) {
+      posts.push(file.page);
+      posts[posts.length - 1].content = file.contents.toString();
+
+      if (file.page.tags) {
+        file.page.tags.forEach(function (tag) {
+          if (tags.indexOf(tag) === -1) {
+            tags.push(tag);
+          }
+        });
+      }
+
+      console.log('collecting...');
+
+      this.push(file);
+      cb();
+    }, function (cb) {
+      console.log('sorting...');
+
+      posts.sort(function (a, b) {
+        return b.date - a.date;
+      });
+      site.posts = posts;
+      site.tags = tags;
+      cb();
+    });
   };
 
-gulp.task('get-all-data', function () {
-
-  // gather all data from all pages
+gulp.task('collect', function () {
+  return gulp.src('src/posts/**/*.md')
+    .pipe(frontMatter({
+      property: 'page',
+      remove: true
+    }))
+    .pipe(marked())
+    .pipe(collectPosts());
 });
 
-gulp.task('markdown', function () {
+gulp.task('markdown', ['collect'], function () {
 
   return gulp.src('src/**/*.md')
     .pipe(frontMatter({

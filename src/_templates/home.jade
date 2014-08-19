@@ -1,19 +1,16 @@
 extends ../_layouts/main.jade
 
-mixin article(title)
+mixin article(item)
   .article
-    h2= title
-    if block
-      block
-    else
-      p No content
+    h2= item.title
+    div!= item.description
 
 block content
 
-  section
-    - for (var i = 0; i < 3; i++)
-      +article('page ' + i)
-        p i
-
   h2= page.title
   section!= content
+
+  h2 Posts
+
+  each val, index in site.posts
+    +article(val)

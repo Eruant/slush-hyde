@@ -1,8 +1,7 @@
 ---
 title: This is a test
 template: post
+description: test description
 ---
-
-# This is a test
 
 To see if it works
