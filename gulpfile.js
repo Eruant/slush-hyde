@@ -11,6 +11,7 @@ var
   sass = require('gulp-sass'),
   source = require('vinyl-source-stream'),
   through = require('through2'),
+  //browserSync = require('browser-sync'),
 
   site = require('./site'),
 
@@ -87,7 +88,8 @@ gulp.task('markdown', ['collect'], function () {
     .pipe(marked())
     .pipe(applyTemplate())
     .pipe(ext('.html'))
-    .pipe(gulp.dest('www'));
+    .pipe(gulp.dest('dest/test'))
+    .pipe(gulp.dest('dest/www'));
 
 });
 
@@ -105,13 +107,15 @@ gulp.task('scripts-compile', ['scripts-hints'], function () {
 
   bundleStream
     .pipe(source('bundle.js'))
-    .pipe(gulp.dest('www/js'));
+    .pipe(gulp.dest('dest/test/js'))
+    .pipe(gulp.dest('dest/www/js'));
 });
 
 gulp.task('styles', function () {
   return gulp.src('src/scss/root.scss')
     .pipe(sass())
-    .pipe(gulp.dest('www/css'));
+    .pipe(gulp.dest('dest/test/css'))
+    .pipe(gulp.dest('dest/www/css'));
 });
 
 gulp.task('watch', ['compile'], function () {
@@ -120,6 +124,17 @@ gulp.task('watch', ['compile'], function () {
   gulp.watch('src/**/*.jade', ['markdown']);
   gulp.watch('src/scss/**/*.scss', ['styles']);
 });
+
+//gulp.task('localhost', ['complile'], function () {
+
+  //return browserSync.init([
+    //'dest/test/*.html',
+    //'dest/test/js/*.js',
+    //'dest/test/css/*.css'
+  //], {
+    //server: './dest/test'
+  //});
+//});
 
 gulp.task('test', ['scripts-hints']);
 gulp.task('scripts', ['scripts-hints', 'scripts-compile']);
