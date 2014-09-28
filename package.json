@@ -9,6 +9,7 @@
   "author": "Matt Gale <matt@littleball.co.uk>",
   "license": "MIT",
   "devDependencies": {
+    "browser-sync": "^1.5.1",
     "browserify": "^5.9.1",
     "gulp": "^3.8.6",
     "gulp-ext-replace": "^0.1.0",

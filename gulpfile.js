@@ -11,7 +11,7 @@ var
   sass = require('gulp-sass'),
   source = require('vinyl-source-stream'),
   through = require('through2'),
-  //browserSync = require('browser-sync'),
+  browserSync = require('browser-sync'),
 
   site = require('./site'),
 
@@ -27,7 +27,7 @@ var
       template = 'src/_templates/' + file.page.template + '.jade';
 
       file.contents = new Buffer(jade.renderFile(template, data), 'utf8');
-      console.log('applying...');
+      console.log('applying...', data);
 
       this.push(file);
       cb();
@@ -41,6 +41,7 @@ var
       tags = [];
 
     return through.obj(function (file, enc, cb) {
+
       posts.push(file.page);
       posts[posts.length - 1].content = file.contents.toString();
 
@@ -66,9 +67,31 @@ var
       site.tags = tags;
       cb();
     });
+  },
+  
+  collectPages = function () {
+
+    var pages = [];
+
+    return through.obj(function (file, enc, cb) {
+
+      pages.push({
+        title: file.page.title,
+        link: file.page.link
+      });
+
+      cb();
+
+    }, function (cb) {
+
+      site.pages = pages;
+      cb();
+
+    });
+
   };
 
-gulp.task('collect', function () {
+gulp.task('collectPosts', function () {
   return gulp.src('src/posts/**/*.md')
     .pipe(frontMatter({
       property: 'page',
@@ -78,7 +101,21 @@ gulp.task('collect', function () {
     .pipe(collectPosts());
 });
 
-gulp.task('markdown', ['collect'], function () {
+gulp.task('collectPages', function () {
+
+  return gulp.src([
+    'src/**/*.md',
+    '!src/posts/**/*.md'
+  ])
+    .pipe(frontMatter({
+      property: 'page',
+      remove: true
+    }))
+    .pipe(collectPages());
+
+});
+
+gulp.task('markdown', ['collectPosts', 'collectPages'], function () {
 
   return gulp.src('src/**/*.md')
     .pipe(frontMatter({
@@ -125,18 +162,18 @@ gulp.task('watch', ['compile'], function () {
   gulp.watch('src/scss/**/*.scss', ['styles']);
 });
 
-//gulp.task('localhost', ['complile'], function () {
+gulp.task('localhost', ['compile'], function () {
 
-  //return browserSync.init([
-    //'dest/test/*.html',
-    //'dest/test/js/*.js',
-    //'dest/test/css/*.css'
-  //], {
-    //server: './dest/test'
-  //});
-//});
+  return browserSync.init([
+    'dest/test/*.html',
+    'dest/test/js/*.js',
+    'dest/test/css/*.css'
+  ], {
+    server: './dest/test'
+  });
+});
 
 gulp.task('test', ['scripts-hints']);
 gulp.task('scripts', ['scripts-hints', 'scripts-compile']);
 gulp.task('compile', ['markdown', 'scripts', 'styles']);
-gulp.task('default', ['compile']);
+gulp.task('default', ['localhost']);

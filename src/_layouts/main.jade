@@ -10,9 +10,11 @@ html
     link(href="css/root.css" type="text/css" rel="stylesheet")
 
 body
+
+  include ../_partials/header.jade
+
   block content
 
-  block footer
-    p This is the footer
+  include ../_partials/footer.jade
 
   script(src="js/bundle.js")
