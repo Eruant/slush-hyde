@@ -1,7 +1,7 @@
 ---
 template: default
 title: About
-link: /about.html
+link: /about
 ---
 
 This is about us
