@@ -4,7 +4,7 @@
 var through = require('through2'),
   jade = require('jade');
 
-// Local variables
+// Custom variables
 var site = require('./site');
 
 /**
@@ -69,6 +69,9 @@ var collectPosts = function () {
   });
 };
 
+/**
+ * Get the links from each file so that we can make a menu
+ */
 var collectPages = function () {
 
   var pages = [];
