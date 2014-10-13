@@ -2,6 +2,8 @@
 
 A node based static site generator, that works in a similar fashion to [Jekyll][jekyll].
 
+**Warning**: This generator is in early development, so not all features have been added, and may not be functioning as planned.
+
 ### Credits
 
 A big thanks to Sean Farrell with his article [From Jekyll to Gulp.js][rioki].
