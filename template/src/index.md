@@ -1,6 +1,6 @@
 ---
 template: home
-title: HDS
+title: Home
 link: /
 ---
 
