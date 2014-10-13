@@ -53,6 +53,6 @@ gulp.task('default', function (done) {
       .on('finish', function () {
         done();
       });
-  }
+  });
 
 });
