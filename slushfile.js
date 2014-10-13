@@ -14,6 +14,20 @@ gulp.task('default', function (done) {
       message: 'Name the site'
     },
     {
+      type: 'input',
+      name: 'packageName',
+      message: 'package name (e.g. example-site)',
+      validate: function (input) {
+        var pass = input.match(/^[A-Za-z0-9\-]+$/);
+        return (pass) ? true : 'You may only use letters, numbers and hyphens (-)'
+      }
+    },
+    {
+      type: 'input',
+      name: 'description',
+      message: 'Description'
+    },
+    {
       type: 'confirm',
       name: 'moveon',
       message: 'Continue?',

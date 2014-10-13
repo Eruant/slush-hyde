@@ -1,4 +1,4 @@
 module.exports = {
-  title: 'Default site',
+  title: '<%= name =>',
   pages: []
 };
