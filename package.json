@@ -1,0 +1,17 @@
+{
+  "name": "slush-hyde",
+  "version: "0.0.1",
+  "description": "A slush generator for creating static sites",
+  "keywords" [
+    "slushgenerator"
+  ],
+  "author": "Matt Gale",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Eurant"
+  },
+  "bugs": {
+    "url": ""
+  },
+  "licence": "MIT"
+}
